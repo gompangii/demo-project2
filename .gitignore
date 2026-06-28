@@ -15,6 +15,12 @@ dist/
 build/
 *.log
 
+# Next.js
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
 # OS / 에디터
 .DS_Store
 Thumbs.db
