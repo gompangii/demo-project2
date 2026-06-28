@@ -15,6 +15,9 @@ dist/
 build/
 *.log
 
+# 테스트 커버리지
+coverage/
+
 # Next.js
 .next/
 out/

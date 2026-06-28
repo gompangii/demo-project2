@@ -1,22 +1,11 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 import type { ChatMessage, AnalysisResult } from "@/lib/types";
+import { resolveLimit } from "@/lib/limit";
 
 export const runtime = "nodejs";
 
 const MODEL = process.env.OPENAI_MODEL || "gpt-4o-mini";
-
-// 분석할 최근 메시지 수: 사용자가 선택 (100/300/500/1000), 기본 300, 상한 1000
-const ALLOWED_LIMITS = [100, 300, 500, 1000];
-const DEFAULT_LIMIT = 300;
-const MAX_LIMIT = 1000;
-
-function resolveLimit(raw: unknown): number {
-  const n = Number(raw);
-  if (ALLOWED_LIMITS.includes(n)) return n;
-  if (Number.isFinite(n) && n > 0) return Math.min(Math.floor(n), MAX_LIMIT);
-  return DEFAULT_LIMIT;
-}
 
 const SYSTEM_PROMPT = `너는 채팅 커뮤니티 방장(운영자)을 돕는 비서다.
 주어진 채팅방 대화 로그를 분석해서 방장이 빠르게 파악할 수 있도록 한국어로 정리한다.
