@@ -1,4 +1,28 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)",
+      "Bash(git show:*)",
+      "Bash(npm run lint)",
+      "Bash(npm run build)",
+      "Bash(npm test:*)",
+      "Bash(npm run test:*)",
+      "PowerShell(git status:*)",
+      "PowerShell(git diff:*)",
+      "PowerShell(git log:*)",
+      "PowerShell(git branch:*)",
+      "PowerShell(npm run lint)",
+      "PowerShell(npm run build)",
+      "PowerShell(npm test:*)",
+      "PowerShell(npm run test:*)",
+      "PowerShell(npx tsc --noEmit)",
+      "PowerShell(*scripts/check.ps1*)",
+      "PowerShell(*scripts/smoke.ps1*)"
+    ]
+  },
   "hooks": {
     "PreToolUse": [
       {

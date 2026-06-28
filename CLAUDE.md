@@ -13,13 +13,33 @@ UI와 LLM에 전달하는 모든 프롬프트는 한국어다. 사용자 노출 
 ```bash
 npm install
 copy .env.local.example .env.local   # 이후 OPENAI_API_KEY 입력 (PowerShell; Windows 저장소)
-npm run dev      # http://localhost:3000
+npm run dev            # http://localhost:3000
 npm run build
 npm start
-npm run lint     # next lint (ESLint)
+npm run lint           # next lint — ⚠ 아직 ESLint 미설정: 첫 실행 시 대화형 설정 프롬프트가 뜬다 (자동화에선 멈춤). scripts/check.ps1 은 이 경우 lint 를 건너뛴다.
+npm test               # vitest run (lib/*.test.ts)
+npm run test:watch     # vitest watch
+npm run test:coverage  # vitest run --coverage
 ```
 
-테스트 프레임워크는 설정되어 있지 않다.
+테스트는 **vitest** 로 돌린다 (`lib/parseCsv.test.ts`, `lib/limit.test.ts`). 새 로직은 `lib/` 단위 테스트로 커버하라.
+
+### 셸 / 작업 환경 (Windows)
+
+- **셸 작업은 PowerShell 도구를 우선 사용하라.** 이 머신의 Git Bash 는 간헐적으로 치명 오류(`add_item ("\??\C:\Program Files\Git", "/") failed`)를 내며, Bash↔PowerShell 을 섞어 쓰면 시간이 샌다. (예외: `.claude/hooks/tdd-guard.sh` 는 의도적으로 bash 로 실행되는 훅이다.)
+- 작업 디렉터리는 이미 프로젝트 루트다 — 매 명령마다 `cd`/`Set-Location` 로 절대 경로를 재입력하지 마라.
+- 파일 수정 전 반드시 먼저 Read 하라 (Write/Edit 가 "File has not been read yet" 으로 실패하는 것을 방지).
+
+### 명령 플레이북 (반복 작업 자동화)
+
+| 용도 | 명령 |
+| --- | --- |
+| 검증 게이트 (lint→typecheck→test→build 일괄) | `pwsh scripts/check.ps1` 또는 `/validate` |
+| `/api/analyze` 연동 스모크 (dev 기동→POST→계약 검증→정리) | `pwsh scripts/smoke.ps1 -Start` |
+| 파서 수동 확인용 샘플 CSV | `scripts/sample-kakao.csv`, `scripts/sample-generic.csv` |
+| add+commit(트레일러)+push | `/ship "커밋 메시지"` |
+
+> `scripts/smoke.ps1` 은 과거에 임시 라우트(`app/api/_partest`)를 만들었다 지우던 일회성 연동 확인을 영구 대체한다. 다시 임시 라우트를 만들지 마라.
 
 ### 환경 변수 (`.env.local`)
 
